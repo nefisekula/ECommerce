@@ -1,0 +1,16 @@
+﻿@using ECommerce.Entities
+@model List<Category>
+
+<h2>Categories</h2>
+<div class="panel-group category-products" id="accordian">
+    @foreach (var category in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href='@Url.Action("Index", "Product", new { CategoryId=category.ID})'>@category.Name</a>
+                </h4>
+            </div>
+        </div>
+    }
+</div>

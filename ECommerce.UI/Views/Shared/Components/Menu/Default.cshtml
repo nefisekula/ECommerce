@@ -1,0 +1,25 @@
+﻿@using ECommerce.Entities
+@model List<Menu>
+
+@{
+    var mainMenus = Model.Where(x => !x.MenuId.HasValue).ToList();
+}
+
+<ul class="nav navbar-nav collapse navbar-collapse">
+    @foreach (var menu in mainMenus)
+    {
+        <li @(menu.MenuId.HasValue ? "class=\"dropdown\"" : "")>
+            <a href="@menu.Url" class="active">@menu.Name  @(menu.MenuId.HasValue? "class=\"fa fa - angle - down\"":"")</a>
+
+            @if (menu.Menus != null)
+            {
+                <ul role="menu" class="sub-menu">
+                    @foreach (var subMenu in menu.Menus)
+                    {
+                        <li><a href="@subMenu.Url">@subMenu.Name</a></li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
