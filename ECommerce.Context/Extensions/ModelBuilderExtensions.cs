@@ -44,7 +44,7 @@ namespace ECommerce.Context.Extensions
                 {
                     ID = 3,
                     Name = "Products",
-                    Url = "/Products",
+                    Url = "/Product",
                     MenuId=2,
                     CreatedBy = "NKula",
                     CreatedTime = DateTime.Now,
@@ -55,7 +55,7 @@ namespace ECommerce.Context.Extensions
                 {
                     ID = 4,
                     Name = "Basket",
-                    Url = "/Products/Basket",
+                    Url = "/Product/Basket",
                     MenuId = 2,
                     CreatedBy = "NKula",
                     CreatedTime = DateTime.Now,
