@@ -1,10 +1,8 @@
-﻿@using ECommerce.Entities
-@model List<Product>
+﻿@using ECommerce.UI.Models
+@model ProductViewModel
 
 <div class="features_items">
-    <!--features_items-->
-    <h2 class="title text-center">Features Items</h2>
-    @foreach (var product in Model)
+    @foreach (var product in Model.Products)
     {
         <div class="col-sm-4">
             <div class="product-image-wrapper">
@@ -33,5 +31,11 @@
         </div>
     }
 
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.TotalPageCount; i++)
+        {
+            <li @(i == Model.PageIndex +1 ? "class='active'" : "")><a href="@Url.Action("Index", "Product", new { categoryId=Model.CategoryId, brandID=Model.BrandId, pageIndex=i})">@i</a></li>
+        }
+    </ul>
 
 </div><!--features_items-->
