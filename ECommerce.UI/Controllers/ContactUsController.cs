@@ -32,26 +32,7 @@ namespace ECommerce.UI.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            /*
-            using (MailMessage mailMsg = new MailMessage(model.Email, "nefise.ozkan@gmail.com"))
-            {
-                mailMsg.Subject = "ECommerce Customer Mail";
-                mailMsg.Body = model.Message;
-
-                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com"))
-                {
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.EnableSsl = true;
-                    smtp.UseDefaultCredentials = false;
-                    NetworkCredential networkCredential = new NetworkCredential("nefise.ozkan@gmail.com", "fname2604212312");   
-                    smtp.Credentials = networkCredential;
-                    smtp.Port = 587;
-                    smtp.Send(mailMsg);
-                    ViewBag.Message = "Email sent.";                  
-                }
-            }
-            */
-            var temp = await _mailService.SendEmailSmtpAsync(model);            
+            ViewBag.Message = await _mailService.SendEmailSmtpAsync(model);
 
             return View();
         }
