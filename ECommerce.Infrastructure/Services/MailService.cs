@@ -1,5 +1,6 @@
 ﻿using ECommerce.Infrastructure.Interfaces;
 using ECommerce.Infrastructure.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace ECommerce.Infrastructure.Services
     public class MailService : IMailService
     {
         private readonly MailInfo _mailInfo;
+        private readonly ILogger<MailService> _logger;
 
-        public MailService(IOptions<MailInfo> mailInfo)
+        public MailService(IOptions<MailInfo> mailInfo, ILogger<MailService> logger)
         {
             _mailInfo = mailInfo.Value;
+            _logger = logger;
         }
 
         public async Task<string> SendEmailSmtpAsync(MailRequestModel mailRequest)
@@ -40,6 +43,7 @@ namespace ECommerce.Infrastructure.Services
                         await smtp.SendMailAsync(mailMsg);
                     }
                 }
+                _logger.LogInformation($"From {mailRequest.Email} address sent an email successfully.");
             }
             catch (Exception ex)
             {
