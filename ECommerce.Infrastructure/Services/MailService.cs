@@ -39,7 +39,6 @@ namespace ECommerce.Infrastructure.Services
                         NetworkCredential networkCredential = new NetworkCredential(_mailInfo.Mail, _mailInfo.Password);
                         smtp.Credentials = networkCredential;
                         smtp.Port = _mailInfo.Port;
-                        smtp.Send(mailMsg);
                         await smtp.SendMailAsync(mailMsg);
                     }
                 }
