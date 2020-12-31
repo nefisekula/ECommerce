@@ -1,10 +1,10 @@
-﻿using ECommerce.Infrastructure.Services.Abstracts;
+﻿using ECommerce.Infrastructure.Extensions;
+using ECommerce.Infrastructure.Services.Abstracts;
 using ECommerce.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ECommerce.UI.Controllers
 {
@@ -46,9 +46,74 @@ namespace ECommerce.UI.Controllers
             return View(product);
         }
 
+        public void AddToBasket(int productId, int quantity)
+        {
+            var basketModel = new BasketModel { Product = _productService.Get(productId), Quantity = quantity };
+            var basketList = SessionExtensions.GetObjectFromJson<List<BasketModel>>(HttpContext.Session, "Cart");
+
+            if (basketList == null)
+            {
+                var cart = new List<BasketModel>();
+                cart.Add(basketModel);
+                SessionExtensions.SetObjectAsJson(HttpContext.Session, "Cart", cart);
+            }
+            else
+            {
+                var index = isExist(productId);
+                if (index != -1)
+                    basketList[index].Quantity += quantity;
+                else
+                    basketList.Add(basketModel);
+
+                SessionExtensions.SetObjectAsJson(HttpContext.Session, "Cart", basketList);
+            }
+        }
+
         public IActionResult Basket()
         {
-            return View();
+            var basketList = SessionExtensions.GetObjectFromJson<List<BasketModel>>(HttpContext.Session, "Cart");
+
+            if (basketList == null)
+                basketList = new List<BasketModel>();
+
+            return View(basketList);
+        }
+
+        public int UpdateQuantity(int productId, int quantity)
+        {
+            var basketList = SessionExtensions.GetObjectFromJson<List<BasketModel>>(HttpContext.Session, "Cart");
+            var index = isExist(productId);
+
+            if (index != -1)
+            {
+                basketList[index].Quantity += quantity;
+
+                SessionExtensions.SetObjectAsJson(HttpContext.Session, "Cart", basketList);
+                
+                return basketList[index].Quantity;
+            }
+            return 0;
+        }
+
+        public void Remove(int productID)
+        {
+            var basketList = SessionExtensions.GetObjectFromJson<List<BasketModel>>(HttpContext.Session, "Cart");
+            var index = isExist(productID);
+
+            basketList.RemoveAt(index);
+            SessionExtensions.Set(HttpContext.Session, "Cart", basketList);
+        }
+
+        private int isExist(int productId)
+        {
+            var cart = SessionExtensions.GetObjectFromJson<List<BasketModel>>(HttpContext.Session, "Cart");
+
+            for (int i = 0; i < cart.Count; i++)
+            {
+                if (cart[i].Product.ID.Equals(productId))
+                    return i;
+            }
+            return -1;
         }
     }
 }

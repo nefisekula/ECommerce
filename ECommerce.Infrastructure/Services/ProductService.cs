@@ -1,9 +1,7 @@
 ﻿using ECommerce.Entities;
 using ECommerce.Infrastructure.Repositories.Abstracts;
 using ECommerce.Infrastructure.Services.Abstracts;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ECommerce.Infrastructure.Services
 {
